@@ -68,3 +68,16 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+## why axios ?
+1. it works on JOSN by dfault unlike fetch() where you have to manually convert the text based 
+data to the JSON by calling {resp.json()}
+2. axios has functions specific to the request methoos 
+get 
+post
+put 
+delete 
+3. code less and do more 
+4. it can be used on server or client as well, When we will implement node we can still use this there 

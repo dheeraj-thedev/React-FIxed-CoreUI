@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import React, { lazy, useState } from 'react'
 
 import {
   CAvatar,
@@ -55,8 +55,21 @@ import avatar6 from '../../assets/images/avatars/6.jpg'
 import WidgetsDropdown from '../widgets/WidgetsDropdown.js'
 // const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 import WidgetsBrand from '../widgets/WidgetsBrand.js'
+import axios from 'axios'
 
 const Dashboard = () => {
+  const [users, setUsers] = useState([]);
+  // here we are creating a state and we wiill 
+  //use useEffect to get the users from api 
+  //https://jsonplaceholder.typicode.com/users
+  // result will be saved in the state called users
+
+  // so when you want this api to be called 
+  // after rendering the current coponent 
+  // HOOK == useEffect
+  // compnentdidMount== class 
+
+
   const random = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
@@ -90,6 +103,25 @@ const Dashboard = () => {
     { title: 'Twitter', icon: cibTwitter, percent: 11, value: '37,564' },
     { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319' },
   ]
+
+
+  // instad of this table Example we will ty to call 
+  //https://jsonplaceholder.typicode.com/users 
+
+
+  const baseUrl = "https://jsonplaceholder.typicode.com"
+
+  React.useEffect(() => {
+    axios.get(baseUrl+"/users")
+    .then((response)=>{
+      setUsers(response.data)
+    })
+    .catch(error=>{console.error(error)});
+  }, []);
+
+  // practice this axios next class we will do advanceps 
+  // Interceptors ?
+
 
   const tableExample = [
     {
@@ -406,33 +438,49 @@ const Dashboard = () => {
               <CTable align="middle" className="mb-0 border" hover responsive>
                 <CTableHead color="light">
                   <CTableRow>
-                    <CTableHeaderCell className="text-center">
+                    {/* <CTableHeaderCell className="text-center">
                       <CIcon icon={cilPeople} />
                     </CTableHeaderCell>
                     <CTableHeaderCell>User</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Country</CTableHeaderCell>
-                    <CTableHeaderCell>Usage</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Payment Method</CTableHeaderCell>
-                    <CTableHeaderCell>Activity</CTableHeaderCell>
+                    <CTableHeaderCell>Usage</CTableHeaderCell> */}
+                    <CTableHeaderCell className="text-center">User Name</CTableHeaderCell>
+                    <CTableHeaderCell>Name</CTableHeaderCell>
+                    <CTableHeaderCell>Email</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {tableExample.map((item, index) => (
+                  {users && users.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
-                      <CTableDataCell className="text-center">
-                        <CAvatar size="md" src={item.avatar.src} status={item.avatar.status} />
-                      </CTableDataCell>
+                      {/* <CTableDataCell className="text-center">
+                         <CAvatar size="md" src={item.avatar.src} status={item.avatar.status} /> 
+                      </CTableDataCell> */}
                       <CTableDataCell>
-                        <div>{item.user.name}</div>
+                        <div>{item.username}</div>
                         <div className="small text-medium-emphasis">
-                          <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
-                          {item.user.registered}
+                          {/* <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
+                          {item.user.registered} */}
                         </div>
                       </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.country.flag} title={item.country.name} />
+                      <CTableDataCell>
+                        <div>{item.name}</div>
+                        <div className="small text-medium-emphasis">
+                          {/* <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
+                          {item.user.registered} */}
+                        </div>
                       </CTableDataCell>
                       <CTableDataCell>
+                        <div>{item.email}</div>
+                        <div className="small text-medium-emphasis">
+                          {/* <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
+                          {item.user.registered} */}
+                        </div>
+                      </CTableDataCell>
+                      
+                      {/* <CTableDataCell className="text-center">
+                        <CIcon size="xl" icon={item.country.flag} title={item.country.name} />
+                      </CTableDataCell> */}
+                      {/* <CTableDataCell>
                         <div className="clearfix">
                           <div className="float-start">
                             <strong>{item.usage.value}%</strong>
@@ -449,7 +497,7 @@ const Dashboard = () => {
                       <CTableDataCell>
                         <div className="small text-medium-emphasis">Last login</div>
                         <strong>{item.activity}</strong>
-                      </CTableDataCell>
+                      </CTableDataCell> */}
                     </CTableRow>
                   ))}
                 </CTableBody>
